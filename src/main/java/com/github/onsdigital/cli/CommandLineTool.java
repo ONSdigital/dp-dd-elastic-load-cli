@@ -19,63 +19,63 @@ import java.util.Set;
 
 public class CommandLineTool {
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(CommandLineTool.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(CommandLineTool.class);
 
-  public static void main(String... args) throws IOException {
-    JCommander jc = buildCommander();
-    jc.parse(args);
-    String parsedCommand = jc.getParsedCommand();
+    public static void main(String... args) throws IOException {
+        JCommander jc = buildCommander();
+        jc.parse(args);
+        String parsedCommand = jc.getParsedCommand();
 
-    if (StringUtils.isBlank(parsedCommand)) {
-      jc.usage();
-      return;
-    }
-    // Get the 'Parsed' Command object
-    JCommander jCommander = jc.getCommands()
-                              .get(parsedCommand);
+        if (StringUtils.isBlank(parsedCommand)) {
+            jc.usage();
+            return;
+        }
+        // Get the 'Parsed' Command object
+        JCommander jCommander = jc.getCommands()
+                                  .get(parsedCommand);
 
-    Command requestedCommand = (Command) jCommander
-        .getObjects()
-        .get(0);
-    requestedCommand.execute();
-
-
-  }
+        Command requestedCommand = (Command) jCommander
+                .getObjects()
+                .get(0);
+        requestedCommand.execute();
 
 
-  /**
-   * Build the JCommander parameter parser based on the children of the Command interface
-   */
-  private static JCommander buildCommander() {
-    final JCommander c = new JCommander();
-    Reflections reflections = new Reflections("com.github.onsdigital.cli.commands");
-    Set<Class<? extends Command>> subTypes = reflections.getSubTypesOf(Command.class);
-    subTypes.stream()
-            .filter(CommandLineTool::isNotInterface)
-            .filter(CommandLineTool::isNotAbstract)
-            .forEach(cmd -> CommandLineTool.addNewCommand(c,
-                                                          cmd));
-    return c;
-  }
-
-
-  private static void addNewCommand(JCommander c, Class commandClass) {
-    try {
-      c.addCommand(commandClass.newInstance());
-    }
-    catch (InstantiationException | IllegalAccessException e) {
-      LOGGER.info("addNewCommand([c, commandClass]) : Exception ",
-                  e);
     }
 
-  }
 
-  private static boolean isNotInterface(Class<? extends Command> c) {
-    return !c.isInterface();
-  }
+    /**
+     * Build the JCommander parameter parser based on the children of the Command interface
+     */
+    private static JCommander buildCommander() {
+        final JCommander c = new JCommander();
+        Reflections reflections = new Reflections("com.github.onsdigital.cli.commands");
+        Set<Class<? extends Command>> subTypes = reflections.getSubTypesOf(Command.class);
+        subTypes.stream()
+                .filter(CommandLineTool::isNotInterface)
+                .filter(CommandLineTool::isNotAbstract)
+                .forEach(cmd -> CommandLineTool.addNewCommand(c,
+                                                              cmd));
+        return c;
+    }
 
-  private static boolean isNotAbstract(Class<? extends Command> c) {
-    return !Modifier.isAbstract(c.getModifiers());
-  }
+
+    private static void addNewCommand(JCommander c, Class commandClass) {
+        try {
+            c.addCommand(commandClass.newInstance());
+        }
+        catch (InstantiationException | IllegalAccessException e) {
+            LOGGER.info("addNewCommand([c, commandClass]) : Exception ",
+                        e);
+        }
+
+    }
+
+    private static boolean isNotInterface(Class<? extends Command> c) {
+        return !c.isInterface();
+    }
+
+    private static boolean isNotAbstract(Class<? extends Command> c) {
+        return !Modifier.isAbstract(c.getModifiers());
+    }
 
 }

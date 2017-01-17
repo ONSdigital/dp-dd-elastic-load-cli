@@ -25,43 +25,43 @@ import java.util.List;
 @Parameters(commandNames = AllCsvFilesConvertedCommand.ACTION,
             commandDescription = "Convert all CSV File to Json String in and under the directory")
 public class AllCsvFilesConvertedCommand implements Command {
-  public static final String ACTION = "convertAllCsvFiles";
-  public static final String UTF_8 = "UTF-8";
-  private static final Logger LOGGER = LoggerFactory.getLogger(AllCsvFilesConvertedCommand.class);
-  @Parameter(names = "--help",
-             help = true)
-  boolean help = false;
+    public static final String ACTION = "convertAllCsvFiles";
+    public static final String UTF_8 = "UTF-8";
+    private static final Logger LOGGER = LoggerFactory.getLogger(AllCsvFilesConvertedCommand.class);
+    @Parameter(names = "--help",
+               help = true)
+    boolean help = false;
 
-  @Parameter(names = {"--csvDataDirectory", "-c"},
-             required = true,
-             description = "The CSV File to be converted into a Json Structure")
-  private String csvDataDir;
-
-
-  @Parameter(names = {"--structure", "-s"},
-             required = false,
-             description = "The  CSV File to be converted into which Json Structure")
-  private DataSetEnum dataSetEnum = DataSetEnum.JSON;
+    @Parameter(names = {"--csvDataDirectory", "-c"},
+               required = true,
+               description = "The CSV File to be converted into a Json Structure")
+    private String csvDataDir;
 
 
-  public void execute() throws IOException {
-    File file = new File(getCsvDataDir());
-    final Collection<File> files = FileUtils.listFiles(file,
-                                                       new NameFileFilter("data.csv"),
-                                                       new NotFileFilter(new NameFileFilter("previous")));
+    @Parameter(names = {"--structure", "-s"},
+               required = false,
+               description = "The  CSV File to be converted into which Json Structure")
+    private DataSetEnum dataSetEnum = DataSetEnum.JSON;
 
-    List<DataSetBuilder> dataSetBuilder = new ArrayList();
 
-    files.forEach(f -> dataSetBuilder.add(BuilderFactory.getInstance(dataSetEnum,
-                                                                     f.getParentFile())));
+    public void execute() throws IOException {
+        File file = new File(getCsvDataDir());
+        final Collection<File> files = FileUtils.listFiles(file,
+                                                           new NameFileFilter("data.csv"),
+                                                           new NotFileFilter(new NameFileFilter("previous")));
 
-    IndexLoader.getInstance()
-               .build(dataSetBuilder);
-  }
+        List<DataSetBuilder> dataSetBuilder = new ArrayList();
 
-  public String getCsvDataDir() {
-    return csvDataDir;
-  }
+        files.forEach(f -> dataSetBuilder.add(BuilderFactory.getInstance(dataSetEnum,
+                                                                         f.getParentFile())));
+
+        IndexLoader.getInstance()
+                   .build(dataSetBuilder);
+    }
+
+    public String getCsvDataDir() {
+        return csvDataDir;
+    }
 
 
 }

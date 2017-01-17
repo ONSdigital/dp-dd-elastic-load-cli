@@ -22,41 +22,41 @@ import java.util.Map;
 public class RowbasedDataSetBuilder extends AbstractDataSetBuilder<String> {
 
 
-  public RowbasedDataSetBuilder(final File dataDirectory) {
-    super(dataDirectory);
+    public RowbasedDataSetBuilder(final File dataDirectory) {
+        super(dataDirectory);
 
 
-  }
-
-
-  @Override
-  public final Collection<DataSet> loadDataSet(final File csvFile) throws IOException {
-    CsvMapper mapper = new CsvMapper();
-    ObjectMapper objMapper = new ObjectMapper();
-    CsvSchema schema = CsvSchema.emptySchema()
-                                .withHeader(); // use first row as header; otherwise defaults are fine
-    MappingIterator<Object> it = mapper.readerFor(Map.class)
-                                       .with(schema)
-                                       .readValues(csvFile);
-    List<String> collection = new ArrayList<String>();
-    while (it.hasNext()) {
-      collection.add(objMapper.writeValueAsString(it.next()));
     }
-    return Lists.newArrayList(new DataSet(collection));
-
-  }
-
-  @Override
-  public final MetaData loadMetaData(final File metaDataFile) throws IOException {
-    ObjectMapper mapper = new ObjectMapper();
-    return new MetaData(mapper.readValue(metaDataFile,
-                                         Map.class));
-
-  }
 
 
-  @Override
-  public DataSetEnum getType() {
-    return DataSetEnum.ROWS;
-  }
+    @Override
+    public final Collection<DataSet> loadDataSet(final File csvFile) throws IOException {
+        CsvMapper mapper = new CsvMapper();
+        ObjectMapper objMapper = new ObjectMapper();
+        CsvSchema schema = CsvSchema.emptySchema()
+                                    .withHeader(); // use first row as header; otherwise defaults are fine
+        MappingIterator<Object> it = mapper.readerFor(Map.class)
+                                           .with(schema)
+                                           .readValues(csvFile);
+        List<String> collection = new ArrayList<String>();
+        while (it.hasNext()) {
+            collection.add(objMapper.writeValueAsString(it.next()));
+        }
+        return Lists.newArrayList(new DataSet(collection));
+
+    }
+
+    @Override
+    public final MetaData loadMetaData(final File metaDataFile) throws IOException {
+        ObjectMapper mapper = new ObjectMapper();
+        return new MetaData(mapper.readValue(metaDataFile,
+                                             Map.class));
+
+    }
+
+
+    @Override
+    public DataSetEnum getType() {
+        return DataSetEnum.ROWS;
+    }
 }

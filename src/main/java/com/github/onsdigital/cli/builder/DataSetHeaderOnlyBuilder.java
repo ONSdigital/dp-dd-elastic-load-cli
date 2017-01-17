@@ -20,35 +20,35 @@ import java.util.Map;
 public class DataSetHeaderOnlyBuilder extends AbstractDataSetBuilder<Map> {
 
 
-  public DataSetHeaderOnlyBuilder(final File dataDirectory) {
-    super(dataDirectory);
+    public DataSetHeaderOnlyBuilder(final File dataDirectory) {
+        super(dataDirectory);
 
 
-  }
+    }
 
 
-  @Override
-  public final Collection<DataSet> loadDataSet(final File csvFile) throws IOException {
-    CsvMapper mapper = new CsvMapper();
-    CsvSchema schema = CsvSchema.emptySchema()
-                                .withoutHeader(); // load  first row as data as we only want the header
-    //Just load the first row
-    return Lists.newArrayList(new DataSet(mapper.readerFor(List.class)
-                                                .with(schema)
-                                                .readValue(csvFile)));
-  }
+    @Override
+    public final Collection<DataSet> loadDataSet(final File csvFile) throws IOException {
+        CsvMapper mapper = new CsvMapper();
+        CsvSchema schema = CsvSchema.emptySchema()
+                                    .withoutHeader(); // load  first row as data as we only want the header
+        //Just load the first row
+        return Lists.newArrayList(new DataSet(mapper.readerFor(List.class)
+                                                    .with(schema)
+                                                    .readValue(csvFile)));
+    }
 
-  @Override
-  public final MetaData loadMetaData(final File metaDataFile) throws IOException {
-    ObjectMapper mapper = new ObjectMapper();
-    return new MetaData(mapper.readValue(metaDataFile,
-                                         Map.class));
+    @Override
+    public final MetaData loadMetaData(final File metaDataFile) throws IOException {
+        ObjectMapper mapper = new ObjectMapper();
+        return new MetaData(mapper.readValue(metaDataFile,
+                                             Map.class));
 
-  }
+    }
 
 
-  @Override
-  public DataSetEnum getType() {
-    return DataSetEnum.HEADERS;
-  }
+    @Override
+    public DataSetEnum getType() {
+        return DataSetEnum.HEADERS;
+    }
 }
