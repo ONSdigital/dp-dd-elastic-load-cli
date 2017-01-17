@@ -1,0 +1,27 @@
+{
+  "dataSet" : [ {
+    "group" : "No permanent  physical store",
+    "online" : "73",
+    "in store" : "27"
+  }, {
+    "group" : "Clothing shops",
+    "online" : "12",
+    "in store" : "88"
+  }, {
+    "group" : "Department stores",
+    "online" : "11",
+    "in store" : "89"
+  }, {
+    "group" : "Household goods stores ",
+    "online" : "7",
+    "in store" : "93"
+  }, {
+    "group" : "Shops selling other items",
+    "online" : "7",
+    "in store" : "93"
+  }, {
+    "group" : "Shops that sell  mainly food",
+    "online" : "4",
+    "in store" : "96"
+  } ]
+}

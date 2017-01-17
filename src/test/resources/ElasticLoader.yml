@@ -1,0 +1,6 @@
+---
+host: "localhost"
+port: 9300
+index: "demo_index"
+type: "dataset"
+bulkingSize: 10

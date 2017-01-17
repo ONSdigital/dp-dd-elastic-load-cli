@@ -1,0 +1,6 @@
+---
+host: "TestHost"
+port: 9876
+index: "TestIndex"
+type: "TestType"
+bulkingSize: 23

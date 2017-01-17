@@ -1,0 +1,7 @@
+---
+host: "localhost"
+port: 9300
+index: "test_individual_index"
+type: "doc"
+bulkingSize: 1
+logMessageLocation: ""
